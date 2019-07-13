@@ -1,0 +1,16 @@
+{
+  "name": "kotlin-hyperapp",
+  "version": "$version",
+  "description": "Hyperapp wrapper for Kotlin/JS.",
+  "main": "./dist/kotlin-hyperapp.js",
+  "author": "Yuku Kotani",
+  "license": "Apache License 2.0",
+  "keywords": [
+    "Kotlin",
+    "Kotlin/JS",
+    "Hyperapp"
+  ],
+  "dependencies": {
+    "hyperapp": "$hyperapp_version"
+  }
+}

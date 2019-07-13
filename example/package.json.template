@@ -1,0 +1,23 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@jetbrains/gen-idea-libs": "^1.0.11",
+    "@jetbrains/kotlin-webpack-plugin": "^2.0.3",
+    "kotlin": "$kotlin_version",
+    "kotlin-hyperapp": "file:../kotlin-hyperapp/build/npm",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.5"
+  },
+  "dependencies": {
+    "hyperapp": "$hyperapp_version"
+  }
+}
