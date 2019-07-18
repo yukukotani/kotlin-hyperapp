@@ -1,7 +1,3 @@
-/node_modules
-/kotlin-hyperapp/node_modules/
-/example/node_modules/
-
 /.gradle
 /build
 /kotlin-hyperapp/build
@@ -13,9 +9,4 @@
 /example/out
 
 /example/kotlin_build
-
-example/package.json
-kotlin-hyperapp/package.json
-example/package-lock.json
-kotlin-hyperapp/package-lock.json
 

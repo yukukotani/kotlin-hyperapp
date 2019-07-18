@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.js")
-    id("com.moowork.node")
 }
 
 val kotlinVersion: String by extra
@@ -28,22 +27,6 @@ kotlin.target.browser {
     }
 }
 
-task<Copy>("preparePackage") {
-    from(".")
-    include("package.json.template")
-    expand(
-        "version" to version,
-        "kotlin_version" to kotlinVersion,
-        "hyperapp_version" to hyperappVersion
-    )
-    rename {
-        it.replace(".template", "")
-    }
-    into(".")
-    
-    finalizedBy("npm_run_build")
-}
-
 tasks.build {
-    finalizedBy("preparePackage")
+    dependsOn(tasks.findByPath(":kotlin-hyperapp:build"))
 }
