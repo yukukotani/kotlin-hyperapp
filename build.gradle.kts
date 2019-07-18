@@ -12,4 +12,5 @@ allprojects {
 release {
     failOnCommitNeeded = false
     failOnUnversionedFiles = false
+    buildTasks = listOf<String>()
 }
