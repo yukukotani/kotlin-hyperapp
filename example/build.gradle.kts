@@ -4,9 +4,6 @@ plugins {
     id("org.jetbrains.kotlin.js")
 }
 
-val kotlinVersion: String by extra
-val hyperappVersion: String by extra
-
 repositories {
     mavenCentral()
 }
