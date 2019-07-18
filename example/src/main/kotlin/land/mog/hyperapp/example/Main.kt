@@ -1,6 +1,9 @@
 package land.mog.hyperapp.example
 
-import land.mog.hyperapp.*
+import land.mog.hyperapp.Actions
+import land.mog.hyperapp.State
+import land.mog.hyperapp.app
+import land.mog.hyperapp.h
 import kotlin.browser.document
 import kotlin.js.json
 

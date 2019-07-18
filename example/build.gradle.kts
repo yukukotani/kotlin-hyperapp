@@ -15,6 +15,7 @@ dependencies {
     compile(kotlin("stdlib-js"))
     compile(project(":kotlin-hyperapp"))
 }
+
 kotlin.target.browser {
     configure<SourceSetContainer> {
         tasks.withType<Kotlin2JsCompile> {
