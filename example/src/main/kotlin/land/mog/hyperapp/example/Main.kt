@@ -18,7 +18,7 @@ fun main() {
         } }
     )
         
-    val view = { state: ExampleState, actions: ExampleActions ->
+    val view =  { state: ExampleState, actions: ExampleActions ->
         val upAttributes = json(
             "onclick" to { actions.up(1) }
         )
