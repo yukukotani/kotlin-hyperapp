@@ -2,6 +2,7 @@ package land.mog.hyperapp.example
 
 import land.mog.hyperapp.*
 import kotlin.browser.document
+import kotlin.js.json
 
 fun main() {
     val initialState = ExampleState(
@@ -17,13 +18,13 @@ fun main() {
         } }
     )
         
-    val view = { state: ExampleState, actions: ExampleActions -> 
-        val upAttributes = jsObject {
-            onclick = { actions.up(1) }
-        }
-        val downAttributes = jsObject { 
-            onclick = { actions.down(1) }
-        }
+    val view = { state: ExampleState, actions: ExampleActions ->
+        val upAttributes = json(
+            "onclick" to { actions.up(1) }
+        )
+        val downAttributes = json(
+            "onclick" to { actions.down(1) }
+        )
         
         h("div", null, arrayOf(
             h("h1", null, arrayOf(state.count)),
