@@ -1,12 +1,15 @@
 import com.moowork.gradle.node.npm.NpmTask
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import java.util.Date
 
 plugins {
     id("org.jetbrains.kotlin.js")
     id("com.moowork.node")
+    id("maven-publish")
+    id("com.jfrog.bintray")
 }
 
-val hyperapp_version: String by extra
+val hyperappVersion: String by extra
 
 repositories {
     mavenCentral()
@@ -27,29 +30,53 @@ kotlin.target.browser {
     }
 }
 
-task<Copy>("preparePackageJson") {
+bintray {
+    user = project.findProperty("bintray_user")?.toString() ?: ""
+    key = project.findProperty("bintray_key")?.toString() ?: ""
+    setPublications("maven")
+    setConfigurations("archives")
+    
+    pkg = pkg.apply { 
+        repo = "maven"
+        name = "kotlin-hyperapp"
+        setLicenses("Apache-2.0")
+        version = version.apply {
+            name = project.version.toString()
+            vcsTag = project.version.toString()
+            released = Date().toString()
+        }
+    }
+}
+
+publishing {
+    publications {
+        register("maven", MavenPublication::class) {
+            from(components.getByName("kotlin"))
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+        }
+    }
+}
+
+val preparePackageJson = task<Copy>("preparePackageJson") {
     from(".")
     include("package.json.template")
-    expand(
-        "version" to version,
-        "hyperapp_version" to hyperapp_version
-    )
+        .expand(
+            "version" to version,
+            "hyperapp_version" to hyperappVersion
+        )
     rename {
         it.replace(".template", "")
     }
     into(".")
 }
 
-task<Copy>("preparePackage") {
-    from("./build/js") {
-        into("./dist")
-    }
-    into("./build/npm")
-    
-    dependsOn("assembleJsLib", "npmInstall")
+tasks.npmInstall {
+    dependsOn(preparePackageJson)
 }
 
-task<Copy>("assembleJsLib") {
+val assembleJsLib = task<Copy>("assembleJsLib") {
     from(zipTree(File("$buildDir/libs/${project.name}-${project.version}.jar"))) {
         include { fileTreeElement ->
             val path = fileTreeElement.path
@@ -67,19 +94,28 @@ task<Copy>("assembleJsLib") {
     dependsOn("assemble")
 }
 
+val prepareNpmPackage = task<Copy>("prepareNpmPackage") {
+    from("./build/js") {
+        into("./dist")
+    }
+    into("./build/npm")
+
+    dependsOn(assembleJsLib, tasks.npmInstall)
+}
+
 tasks.build {
-    finalizedBy("preparePackage")
+    finalizedBy(prepareNpmPackage)
 }
 
-tasks.npmInstall {
-    dependsOn("preparePackageJson")
-}
-
-tasks.getByName<NpmTask>("npm_publish") {
+val npmPublish = tasks.getByName<NpmTask>("npm_publish") {
     setArgs(listOf("--access", "public"))
     setExecOverrides(closureOf<Any> {
         setWorkingDir("./build/npm")
     })
     
     dependsOn("build")
+}
+
+tasks.publish {
+    finalizedBy(tasks.bintrayUpload, npmPublish)
 }

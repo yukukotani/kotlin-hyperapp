@@ -5,8 +5,8 @@ plugins {
     id("com.moowork.node")
 }
 
-val kotlin_version: String by extra
-val hyperapp_version: String by extra
+val kotlinVersion: String by extra
+val hyperappVersion: String by extra
 
 repositories {
     mavenCentral()
@@ -33,8 +33,8 @@ task<Copy>("preparePackage") {
     include("package.json.template")
     expand(
         "version" to version,
-        "kotlin_version" to kotlin_version,
-        "hyperapp_version" to hyperapp_version
+        "kotlin_version" to kotlinVersion,
+        "hyperapp_version" to hyperappVersion
     )
     rename {
         it.replace(".template", "")
