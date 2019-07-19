@@ -19,6 +19,7 @@ dependencies {
 }
 
 nodeJs.packageJson {
+    this.main = null
     this.dependencies["hyperapp"] = hyperappVersion
 }
 
@@ -59,8 +60,14 @@ publishing {
             groupId = project.group.toString()
             artifactId = project.name
             version = project.version.toString()
+            
+            artifact(tasks.getByName("kotlinSourcesJar"))
         }
     }
+}
+
+tasks.JsJar {
+    from("../build/js/packages/kotlin-hyperapp/package.json")
 }
 
 tasks.bintrayUpload {
